@@ -7,31 +7,37 @@
 	<link rel="stylesheet" href="https://openlayers.org/en/v3.20.1/css/ol.css" type="text/css">
     <!-- jQuery -->
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-1.11.1.min.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-migrate-1.2.1.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-3.0.0.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui.min.js"></script>
-    
     
     <script type="text/javascript" src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script type="text/javascript" src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>	
     
-	<script src="${pageContext.request.contextPath}/js/Map.js"></script>	
+		
 	<style>
-		#map{
+		#map{	
+			position:relative		
 			height: 100%;
 			width: 80%;
 			float: right;			
 		}		
-		
+		#map .custom-mouse-position {
+			position: absolute;
+			top:0; left:84%;
+			z-index: 0
+		}
+				
 		.right-menu{			
 			float: left;
 		}
+		
 	</style>
 </head>
 <body>
 	<div class="right-menu">
 		<h2>Layer</h2>
-		<button onclick="projectionOnclick(3857)">3857지도</button>
-		<button onclick="projectionOnclick(4326)">4326지도</button>
+		<button onclick="projectionOnclick(3857)" >3857지도</button>
+		<button onclick="projectionOnclick(4326)" >4326지도</button>
 		
 		<br/><br/><br/><br/>
 		
@@ -45,8 +51,8 @@
     	</select>
 	</div>	
 	
-	<div id="map" class="map" tabindex="0"></div>	
+	<div id="map" class="map" tabindex="0"></div>
 	
-	
+	<script src="${pageContext.request.contextPath}/js/Map.js"></script>
 </body>
 </html>
