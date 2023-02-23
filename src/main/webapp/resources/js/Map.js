@@ -1,5 +1,6 @@
 	// ScaleLine Unit Option Select
 	var scaleLineControl = new ol.control.ScaleLine();
+	
 	var projectionSelect = document.getElementById('projection');
 	projectionSelect.addEventListener('change', function(event) {
 		scaleLineControl = new ol.control.ScaleLine({units: event.target.value});
@@ -20,17 +21,18 @@
     });	
 	
 	
-	// Change View	
-	function projectionOnclick(val){
-		var projectionN = 'EPSG:' + val;
-		var projectionF = map.getView().getProjection().hb;
-		console.log(projectionF);
-		map.setView(new ol.View({ projection: projectionN,
-						    	  center: ol.proj.transform([127.6, 37.8], projectionF, projectionN),
-						    	  Zoom: 7 
-						    	}));
-	};				 
-	
+	// Change View		 
+	   function projectionOnclick(val){
+		      var projectionN = 'EPSG:' + val;
+		      
+		      var remapview = new ol.View({
+		         projection: projectionN,
+		         center: ol.proj.transform([127.6, 37.8], 'EPSG:4326', projectionN),
+		         zoom: 7
+		      });
+		      
+		      map.setView(remapview);
+		   };   
 	
 	// Open View
     var map = new ol.Map({

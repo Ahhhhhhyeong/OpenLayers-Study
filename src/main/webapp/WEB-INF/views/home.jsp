@@ -20,21 +20,30 @@
 			height: 100%;
 			width: 80%;
 			float: right;			
-		}		
+		}	
+			
 		#map .custom-mouse-position {
 			position: absolute;
-			top:0; left:84%;
+			top: 0; left:84%;
 			z-index: 0
 		}
-				
-		.right-menu{			
+		
+		.left-menu{		
+			width: 20%;	
 			float: left;
 		}
+		
+		.ol-zoom{
+			left: unset;
+			right: 10;
+			top: 25
+		}
+		
 		
 	</style>
 </head>
 <body>
-	<div class="right-menu">
+	<div class="left-menu">
 		<h2>Layer</h2>
 		<button onclick="projectionOnclick(3857)" >3857지도</button>
 		<button onclick="projectionOnclick(4326)" >4326지도</button>
