@@ -9,34 +9,15 @@
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-3.0.0.min.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery/jquery-ui.min.js"></script>
     <!-- OpenLayers -->
-    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/css/ol.css" type="text/css">
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/build/ol.js"></script>	
+	<script type="text/javascript"> var pageContextPath = '${pageContext.request.contextPath}'; </script>	
 	<!-- css -->
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/main.css">	
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.15.1/css/ol.css" type="text/css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/main.css"> 	
 </head> 
-<body>
-	<div class="left-menu">
-		<h2>Layer</h2>
-		<button onclick="projectionOnclick(3857)" >3857지도</button>
-		<button onclick="projectionOnclick(4326)" >4326지도</button>
-		
-		<br/><br/><br/><br/>
-		
-		<h2>Scale Unit Option</h2>
-		<select id=projection>
-	      <option value="degrees">degrees</option>
-	      <option value="imperial">imperial inch</option>
-	      <option value="us">us inch</option>
-	      <option value="nautical">nautical mile</option>
-	      <option value="metric" selected="">metric</option>
-    	</select>
-	</div>	
-	
+<body>	
 	<div id="map" class="map" tabindex="0"></div>
-	<div id="popup" class="ol-popup">
-      <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-      <div id="popup-content"></div>
-    </div>
-	<script src="${pageContext.request.contextPath}/js/Map.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/Map.js"></script>	
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/Typhoon.js"></script>	
 </body>
 </html>
