@@ -1,8 +1,7 @@
-let typPointFeatureLayer;	//태풍아이콘
-let typLineFeatureLayer;	//태풍경로
-let typCircleFeatureLayer;	//태풍반경
 const mapView = map.getView();
 const projection = mapView.getProjection();
+const resolutionAtEquator = mapView.getResolution();		//점포인트해상도
+let typCircleFeatureLayer;
 
 $("document").ready(function(){
 	readJson();
@@ -33,17 +32,16 @@ const distTypD = (param) => {
 	const obsTm = param.map(item => [item.obs_tm]);
 	const within = param.map(item => [(item.within2)*1000]);
 	//태풍 아이콘 그리기
-	drawingTypIcon(features);
+	drawingTypIcon(features, within);
 	//태풍 경로 그리기
 	drawingTypPaht(features);
-	//위험 반경 그리기
-	drawingTypDanger(features, within);
 }
 
 //태풍 아이콘 그리기
-const drawingTypIcon = (path) => {
+const drawingTypIcon = (path, within) => {
 	const typhoonCenterSource = new ol.source.Vector();
-
+	const typDanSource = new ol.source.Vector();
+	
 	// 포인트 icon 그리기
 	for(let i = 0; i < path.length; i++) {
 		let typicon = new ol.geom.Point(ol.proj.fromLonLat(path[i]));
@@ -52,7 +50,7 @@ const drawingTypIcon = (path) => {
 			cate: 'typhoon',
 			data: path[i]
 		});
-
+		
 		const iconStyle = new ol.style.Style({
 			image: new ol.style.Icon({
 				src: pageContextPath+'/image/typhoonIcon.png',
@@ -60,17 +58,43 @@ const drawingTypIcon = (path) => {
 				offset: [0, 0]
 			})
 		});
-
-		typiconFeature.setStyle(iconStyle);
+		typiconFeature.setStyle(iconStyle);		
 		typhoonCenterSource.addFeature(typiconFeature);
+		
+		if(within[i] != 0){
+			let transpoint = ol.proj.fromLonLat(path[i]);
+			let pointResolution = ol.proj.getPointResolution(projection,resolutionAtEquator, transpoint);		// 지도의 픽셀 해상도를 얻는함수
+			let resolutionFactor = resolutionAtEquator/pointResolution; 										// 오픈레이어스에서 거리맞추기 위해 필요
+			let typRadius = (within[i] / ol.proj.Units.METERS_PER_UNIT.m) * resolutionFactor;
+			
+			const circle = new ol.geom.Circle(transpoint, typRadius);				 
+			let typCircleFeature = new ol.Feature(circle);
+			
+			const circleStyle = new ol.style.Style({
+				image: new ol.style.Circle({
+					fill: new ol.style.Fill({
+						color: 'rgba(255, 26, 26, 0.45)'
+					})
+				})
+			});
+			
+			typCircleFeature.setStyle(circleStyle);
+			typDanSource.addFeature(typCircleFeature); // 원 요소를 추가해야 함
+		}		
 	}
 
-	typPointFeatureLayer = new ol.layer.Vector({
+	const typPointFeatureLayer = new ol.layer.Vector({
 		source: typhoonCenterSource,
 		zIndex: 100,
 	});
+	
+	typCircleFeatureLayer = new ol.layer.Vector({
+		source: typDanSource,
+		zIndex: 80,
+	});
 
 	map.addLayer(typPointFeatureLayer);
+	//map.addLayer(typCircleFeatureLayer);
 };
 
 //태풍 경로 그리기
@@ -95,19 +119,9 @@ const drawingTypPaht = (path) => {
 		typLineFeature.setStyle(strokeStyles);
 		typLineSource.addFeature(typLineFeature);
 	}
-	typLineFeatureLayer = new ol.layer.Vector({
+	const typLineFeatureLayer = new ol.layer.Vector({
 		source: typLineSource,
 		zIndex: 99,
 	});
 	map.addLayer(typLineFeatureLayer);
-}
-
-//태풍 within반경 그리기
-const drawingTypDanger = (path, within) => {
-	console.log(within);
-	const typDanSource = new ol.source.Vector();
-	/*for(let i = 0; i < path.length; i++){
-		
-	}*/
-	
 }
